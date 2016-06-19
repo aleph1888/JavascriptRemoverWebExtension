@@ -6,3 +6,15 @@ document.querySelector("#toggle").addEventListener("click", function() {
   // Ask the background page to toggle the toolbar on the current tab
   port.postMessage("toggle-in-page-toolbar");
 });
+
+// Handle click events on the toolbar button.
+document.querySelector("#buttonLoad").addEventListener("click", function() {
+  // Ask the background page to toggle the toolbar on the current tab
+  port.postMessage("button-load-click");
+});
+
+// Handle click events on the toolbar button.
+document.querySelector("#buttonSign").addEventListener("click", function() {
+  // Ask the background page to toggle the toolbar on the current tab
+  port.postMessage("button-sign-click");
+});

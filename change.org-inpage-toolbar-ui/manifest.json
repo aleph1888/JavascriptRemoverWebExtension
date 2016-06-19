@@ -29,7 +29,7 @@
 
   "web_accessible_resources": [
     "toolbar/ui.html",
-    "searchbar/ui.html"	
+    "loadbar/ui.html"	
   ],
 
   "applications": {

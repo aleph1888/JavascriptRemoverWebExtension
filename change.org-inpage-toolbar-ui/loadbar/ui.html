@@ -6,11 +6,24 @@
   </head>
   <body>
     <span>
-      <div id="rainbow"></div>
-      <img src="whimsy.png" class="whimsy wobbling">
-      <span id="title" class="wobbling">In-Page "Amazing and super-useful" Toolbar</span>
+      <div id="form">
+        <div id="signerData">
+          Email: <input id="inputEmail" type="email"></input>
+          Petition url: <input id="inputUrl" type="url"></input>
+          <input id="buttonLoad" type="submit" value="get petition!"></input>
+          <hr>
+          <div id="petitionForm">
+            [[Petition: Authorization key: %KEY]] 
+            [[Petition: title: %TEXT]] [[Petition: data: %DATA]] 
+            <img src="whimsy.png">[[Petition: banner: %IMG]]    
+            <input id="buttonSign" type="submit" value="sign petition!"></input>
+          </div>
+        </div>
+        <span id="title" class="wobbling">Enter your email and petition url to load sign-form.</span>
+      </div>
     </span>
     <button id="toggle">toggle</button>
+
     <script src="ui.js">
     </script>
   </body>
