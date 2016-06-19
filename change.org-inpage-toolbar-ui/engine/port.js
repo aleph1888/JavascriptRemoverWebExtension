@@ -31,19 +31,22 @@ function petitionsGET(intBottom, inTop){
 * @see https://github.com/vbuck/change-js-api/blob/master/examples/ChangeOrgApiPetition/getPetitionId.md
 * @param strUrl Sample: 'http://www.change.org/petitions/save-the-clock-tower'
 **/
-function petitionGET(strUrl){
+function petitionGET(data, callback){
+
+  var strUrl = data.inputUrl;
 
   mAPIChannel.getPetitionId(strUrl,function(response) {
     console.log(JSON.stringify(response.getData()));
     // Console Output:
-    // {"result":"success","petition_id":1234567} 
+    // {"result":"success","petition_id":1234567}
+    callback(response.getData()); 
   });
 
 }
 /**
  * https://github.com/change/api_docs/blob/master/v1/documentation/resources/petitions/auth_keys.md
  **/
-function authorizationGET(){}
+function authorizationGET(data, callback){}
   
   var auth=mAPIChannel.getAuthorization();
   
@@ -73,6 +76,8 @@ function authorizationGET(){}
                 hidden          : true
             },function(response) {
                 console.log(JSON.stringify(response.getData()));
+                
+                callback(response.getData());
                 // Console Output:
                 // {"auth_key":"YOUR_AUTH_KEY","petition_id":1234567,"requester_email":"...","source":"...","source_description":"...","status":"granted","result":"success"}
                 // {"result":"failure","messages":["user has already signed the petition"]}

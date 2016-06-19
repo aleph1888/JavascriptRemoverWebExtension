@@ -12,14 +12,6 @@ function initToolbar() {
   };
 }
 
-function loadPetitionClick(){
-
-}
-
-function signPetitionClick(){
-  
-}
-
 function toggleToolbar(toolbarUI) {
   if (toolbarUI.visible) {
     toolbarUI.visible = false;
@@ -30,22 +22,42 @@ function toggleToolbar(toolbarUI) {
   }
 }
 
+function getSignerFormData(){
+  return {
+    email: document.getElementById("inputEmail").value;
+  };
+}
+function setSignerFormData(data){
+  document.getElementById("inputEmail").value = data.email;
+}
+
+function getPetitionUrl(){
+  return document.getElementById("inputUrl").value;
+}
+function setPetitionData(data){
+  document.getElementById("hidPetitionId").value = data.hidPetitionId;
+  document.getElementById("hidAuthorizationKey").value = data.hidAuthorizationKey;
+}
+
+
+function getPetitionId(){
+  return document.getElementById("hidPetitionId").value;
+}
+
 // Handle messages from the add-on background page (only in top level iframes)
 if (window.parent == window) {
-  chrome.runtime.onMessage.addListener(function(msg) {
+  chrome.runtime.onMessage.addListener(function(msg, data) {
     if (msg == "toggle-in-page-toolbar") {
       if (toolbarUI) {
         toggleToolbar(toolbarUI);
       } else {
         toolbarUI = initToolbar();
       }
-    } else if (msg == "load-petition-click") {
-
-      loadPetitionClick();
-
-    } else if (msg == "sign-petition-click") {
-
-      signPetitionClick();
+    } else if (msg == "onPetitionReceived") {
+      setSignerFormData(data);
+      setPetitionData(data);
+    } else if (msg == "onAuthorizationReceived") {
+      resetSignerForm(data);
     }
   });
 }
