@@ -11,7 +11,7 @@
   "permissions": [],
 
   "background": {
-    "scripts": ["background.js, engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js"]
+    "scripts": ["background.js, engine/background.js, engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js"]
   },
 
   "browser_action": {
@@ -21,7 +21,7 @@
 
   "content_scripts": [
     {
-      "js": ["contentscript.js"],
+      "js": ["contentscript.js, engine/contentscript.js"],
       "run_at": "document_idle",
       "matches": ["<all_urls>"]
     }
