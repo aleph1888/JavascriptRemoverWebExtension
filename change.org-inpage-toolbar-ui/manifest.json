@@ -11,7 +11,7 @@
   "permissions": [],
 
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["background.js, engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js"]
   },
 
   "browser_action": {
@@ -28,12 +28,13 @@
   ],
 
   "web_accessible_resources": [
-    "toolbar/ui.html"
+    "toolbar/ui.html",
+    "searchbar/ui.html"	
   ],
 
   "applications": {
     "gecko": {
-      "id": "inpage-toolbar-ui@mozilla.org",
+      "id": "change.org-inpage-toolbar | ox@ismy.band",
       "strict_min_version": "46.0"
     }
   }
