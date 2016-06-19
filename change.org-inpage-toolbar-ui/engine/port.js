@@ -9,7 +9,41 @@ mAPIChannel.setCallback(function(response) {
    alert(response.getData('result'));
 }); 
 
-function petitionGET(objSignatureData){
+/**
+ * '1234567,7654321'
+ * https://github.com/change/api_docs/blob/master/v1/documentation/resources/petitions.md#get-petitions
+ **/
+function petitionsGET(intBottom, inTop){
+
+  mAPIChannel.setCallback(function(response) {
+      console.log(JSON.stringify(response.getData()));
+      // Console Output:
+      // {"page":1,"prev_page_endpoint":null,"next_page_endpoint":null,"total_pages":1,"petitions":[{"title":"A Petition to Petition"},{"title":"Save the Clock Tower!"}]} 
+  });
+
+  mAPIChannel.getPetitions({
+      petition_ids: intBottom + "," inTop,
+      fields: 'title'
+  });
+}
+
+/**
+* @see https://github.com/vbuck/change-js-api/blob/master/examples/ChangeOrgApiPetition/getPetitionId.md
+* @param strUrl Sample: 'http://www.change.org/petitions/save-the-clock-tower'
+**/
+function petitionGET(strUrl){
+
+  mAPIChannel.getPetitionId(strUrl,function(response) {
+    console.log(JSON.stringify(response.getData()));
+    // Console Output:
+    // {"result":"success","petition_id":1234567} 
+  });
+
+}
+/**
+ * https://github.com/change/api_docs/blob/master/v1/documentation/resources/petitions/auth_keys.md
+ **/
+function authorizationGET(){}
   
   var auth=mAPIChannel.getAuthorization();
   
@@ -59,42 +93,19 @@ it is up to you to listen for that response and make the authorization key avail
 
 }
 
-function authorizationGET(strEmail, intPetitionId) {
-  mAPIChannel.addSignature({
-     petition_id      : 'YOUR_PETITION_ID',
-     auth_key         : 'YOUR_AUTH_KEY',
-     source           : 'http://www.myblog.com/sign-the-petition/',
-     email            : 'johndoe@gmail.com',
-     first_name       : 'John',
-     last_name        : 'Doe',
-     address          : '123 Any St.',
-     city             : 'Beverly Hills',
-     state_province   : 'CA',
-     postal_code      : '90210',
-     country_code     : 'US',
-     phone            : '5555555555',
-     reason           : 'I support this petition',
-     hidden           : false
-  });
-}
-
-function signaturePUT(hashAuthorizationKey, intPetitionId) {
-  mAPIChannel.addSignature({
-     petition_id      : 'YOUR_PETITION_ID',
-     auth_key         : 'YOUR_AUTH_KEY',
-     source           : 'http://www.myblog.com/sign-the-petition/',
-     email            : 'johndoe@gmail.com',
-     first_name       : 'John',
-     last_name        : 'Doe',
-     address          : '123 Any St.',
-     city             : 'Beverly Hills',
-     state_province   : 'CA',
-     postal_code      : '90210',
-     country_code     : 'US',
-     phone            : '5555555555',
-     reason           : 'I support this petition',
-     hidden           : false
-  });
+/**
+ * https://github.com/vbuck/change-js-api/blob/master/examples/ChangeOrgApiPetition/getAuthorization.md#sending-a-follow-up-request
+ **/
+function followUpTheRequest(intPetitionId){
+  
+  mAPIClient.setPetitionId(intPetitionId)
+    .setRequesterEmail('requester@gmail.com')
+    .setSource('http://www.myblog.com/sign-the-petition')
+    .setSourceDescription('My Blog')
+    .setFollowupFlag(true)
+    .setCallback(function(response) {
+        alert(response.getData('auth_key'));
+    });
 }
 
 

@@ -1,3 +1,28 @@
+function startWorker() {
+    if(typeof(Worker) !== "undefined") {
+        if(typeof(w) == "undefined") {
+            w = new Worker("port.js");
+        }
+
+        w.addEventListener("message", function (oEvent) {
+          console.log("Called back by the worker!\n");
+        }, false);
+
+        w.postMessage(""); // start the worker.
+
+        w.onmessage = function(event) {
+            document.getElementById("result").innerHTML = event.data;
+        };
+    } else {
+        document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
+    }
+}
+
+function stopWorker() {
+    w.terminate();
+    w = undefined;
+}
+
 // Send a message to the current tab's content script.
 function loadPetition() {
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
