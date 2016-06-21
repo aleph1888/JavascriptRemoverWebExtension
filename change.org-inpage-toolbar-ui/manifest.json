@@ -13,8 +13,8 @@
   "background": {
     "scripts": ["background.js, 
         engine/port.js, engine/background.js, 
-        engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js"
-        ]
+        engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js,
+        engine/signerdata_cookie.js"]
   },
 
   "browser_action": {
