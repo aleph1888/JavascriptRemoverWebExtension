@@ -5,28 +5,70 @@
     <link rel="stylesheet" href="ui.css">
   </head>
   <body>
-    <span>
-      <div id="form">
-        <div id="signerData">
-          Email: <input id="inputEmail" type="email"></input>
-          Petition url: <input id="inputUrl" type="url"></input>
-          <input id="buttonLoad" type="submit" value="get petition!"></input>
-          <hr>
-          <div id="petitionForm">
-            <input type="hidden" id="hidPetitionId">
-            <input type="hidden" id="hidAuthorizationKey">
-            [[Petition: Authorization key: %KEY]] 
-            [[Petition: title: %TEXT]] [[Petition: data: %DATA]] 
-            <img src="whimsy.png">[[Petition: banner: %IMG]]    
-            <input id="buttonSign" type="submit" value="sign petition!"></input>
-          </div>
+    <span id="changeorgwebext_loadbar">
+      
+      <h1>Change.org webextension</h1>
+
+      <div id="header">
+        <h2>Petitions list</h2>
+        <span id="title" class="wobbling">Instructions and warnings</span>
+        <div id="list">
+          <ul id="petitions_list">
+          </ul>
+          <p><a id="previous">Previous page</a> / <a id="next">next page</a></p>
         </div>
-        <span id="title" class="wobbling">Enter your email and petition url to load sign-form.</span>
+      </div>
+
+      <div id="bar">
+        <h2>Petition bar</h2>
+        <div id="petition_loader">
+          <h3>Petition search by url</h3>
+          url: <input id="url" type="url" ></input>
+        </div>        
+        <div id="signer_data">
+          <h3>Signer data</h3>
+            <ul>
+              <li>email: <input id="email" type="email"></input></li>
+              <li>name: <input id="name" type="text"></input></li>
+            </ul>
+            <ul>
+              <li>
+                address: <textarea id="address" rows="4" cols="50"></textarea>
+              </li>
+              <li>                
+                <input id="button_load" type="submit" value="search url">
+              </li>
+            </ul>
+        </div>      
+      </div>
+
+      <div id="widget">
+        <h2>Sign petition form</h2>
+        <div id="petition_data">
+          <h3>Petition data</h3>
+          <ul>
+            <li>id: <input id="id" type="text"></input></li>
+            <li>title: <input id="tittle" type="text"></input></li>
+            <li>description: <textarea id="description" rows="4" cols="50"></textarea></li>
+            <li>thumbnail: <img id="thumbnail"></li>
+          </ul>
+        </div>    
+        <div id="signature_data">
+          <h3>Signer data</h3>
+          <ul>
+            <li>email: <input id="email" type="email"></input></li>
+            <li>key: <input id="key" type="text" size="75"></input></li>
+            <li>reasons: <textarea id="reasons" rows="4" cols="50"></textarea></li>
+            <li><input id="button_sign" type="submit" value="sign"></li>
+          </ul>
+        </div>            
       </div>
     </span>
+        
     <button id="toggle">toggle</button>
-
+    
     <script src="ui.js">
     </script>
+
   </body>
 </html>
