@@ -11,10 +11,10 @@
   "permissions": [],
 
   "background": {
-    "scripts": ["background.js, 
+    "scripts": ["
         engine/port.js, engine/background.js, 
         engine/change-js-api/sha256.js, engine/change-js-api/changeorgapi.min.js,
-        engine/signerdata_cookie.js"]
+        engine/signerdata_cookie.js, engine/docCookies.js"]
   },
 
   "browser_action": {
@@ -24,14 +24,13 @@
 
   "content_scripts": [
     {
-      "js": ["contentscript.js, engine/contentscript.js"],
+      "js": ["engine/contentscript.js"],
       "run_at": "document_idle",
       "matches": ["<all_urls>"]
     }
   ],
 
   "web_accessible_resources": [
-    "toolbar/ui.html",
     "loadbar/ui.html"	
   ],
 

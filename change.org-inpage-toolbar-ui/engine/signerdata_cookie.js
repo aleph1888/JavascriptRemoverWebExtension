@@ -1,84 +1,105 @@
-/**
- * Signer data cookie
- */
-var mSignerDataCookie = {
-    storeId: "changeorgwebext",
-    name: "signer_data",
-   	signer: {email: "foo@foo.fo",
-  	         name: "foo",
-  	         address: "foo"},
-    expirationDate: 1833062400
-};
+function sd_c(){
 
-var getSignerDataCookie = browser.cookies.get({
-  storeId: "changeorgwebext",
-  name: "signer_data",
-});
+  this.initValue = 1;
 
+  /**
+   * Signer data cookie
+   */
+  this.mSignerDataCookie = {
+      storeId: "changeorgwebext",
+      name: "changeorgwebext.signer_data",
+     	signer: {email: "foo@foo.fo",
+    	         name: "foo",
+    	         address: "foo"},
+      expirationDate: 1833062400
+  };
 
-/**
- * Setting value
- */
+   /**
+   * Setting value
+   */
 
-var callback_set;
+  this.callback_set;
 
-function onSet(cookie) {
-  if (chrome.runtime.LastError) {
-    console.error(chrome.runtime.LastError);
-  } else {
-    console.log(cookie);
-  	callback_set(cookie);
+  this.onSet = function(cookie) {
+    if (chrome.runtime.LastError) {
+      console.error(chrome.runtime.LastError);
+    } else {
+      console.log(cookie);
+      callback_set(cookie);
+    }
   }
+
+  /**
+   * Retrieving value
+   */
+  this.callback_got;
+  this.callback_error;
+
+  this.gotCookie = function(cookie) {
+    console.log(cookie);
+    callback_got(cookie);  
+  }
+
+  this.gotError = function(errorMessage) {
+    console.error(errorMessage);
+    callback_error(errorMessage);
+  }
+
+  /**
+   * Nulls signer data cookie.
+   *
+   * @param callback See {@link #onSet(cookie)} 
+   **/
+  this.deleteSignerDataCookie = function(callback){
+
+    mSignerDataCookie.signer = null;
+
+    chrome.cookies.set(mSignerDataCookie, callback);
+
+  }
+
+  /**
+   * Fills signer data cookie.
+   *
+   * @param callback See {@link #onSet(cookie)} 
+   **/
+  this.setSignerDataCookie = function(cookie, callback){
+
+    chrome.cookies.set(cookie, callback);
+
+  }
+
+  /**
+   * Retrieves signer data cookie.
+   *
+   * @param callbackSuccess See {@link #gotCookie(cookie)} 
+   * @param callbackError See {@link #gotError(cookie)} 
+   **/
+  this.getSignerDataCookie = function(callbackSuccess, callbackError){
+
+    var addonCacheValue = JSON.parse(docCookies.getItem("changeorgwebext.signer_data"));
+
+    QUnit.test( "docCookie retrieve action", function( assert ) {
+      assert.ok(addonCacheValue != null, addonCacheValue.name );
+    });
+
+     callbackSuccess(addonCacheValue);
+  }
+
+  this.initSignerDataCookie = function() {
+
+    docCookies.setItem("changeorgwebext.signer_data", JSON.stringify(this.mSignerDataCookie));
+    self = this;
+    QUnit.test( "docCookie write action", function( assert ) {
+      var cached = JSON.parse(docCookies.getItem("changeorgwebext.signer_data"));
+      console.log(cached.name);
+      assert.ok(
+        cached != null,
+        cached.name + " " + self.mSignerDataCookie.name );       
+    });
+
+  } 
+
 }
 
-/**
- * Retrieving value
- */
-var callback_got;
-var callback_error;
-
-function gotCookie(cookie) {
-  console.log(cookie);
-  callback_got(cookie);  
-}
-
-function gotError(errorMessage) {
-  console.error(errorMessage);
-  callback_error(errorMessage);
-}
-
-/**
- * Nulls signer data cookie.
- *
- * @param callback See {@link #onSet(cookie)} 
- **/
-function deleteSignerDataCookie(callback){
-
-  mSignerDataCookie.signer = null;
-
-  chrome.cookies.set(mSignerDataCookie, callback);
-
-}
-
-/**
- * Fills signer data cookie.
- *
- * @param callback See {@link #onSet(cookie)} 
- **/
-function setSignerDataCookie(cookie, callback){
-
-  chrome.cookies.set(cookie, callback);
-
-}
-
-/**
- * Retrieves signer data cookie.
- *
- * @param callbackSuccess See {@link #gotCookie(cookie)} 
- * @param callbackError See {@link #gotError(cookie)} 
- **/
-function getSignerDataCookie(callbackSuccess, callbackError){
-
-  getSignerDataCookie.then(callbackSuccess, callbackError);
-
-}
+module.exports = sd_c;
