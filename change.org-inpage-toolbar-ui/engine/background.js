@@ -44,7 +44,12 @@ function onAuthorizationReceived(petitionData) {
   });
 }
 
-
+// Send a message to the current tab's content script.
+function onPetitionsReceived(petitionsList) {
+  chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+    chrome.tabs.sendMessage(tabs[0].id, "onPetitionsReceived", petitionsList);
+  });
+}
 
 // Handle the browser action button.
 chrome.browserAction.onClicked.addListener(toggleToolbar);
@@ -52,9 +57,14 @@ chrome.browserAction.onClicked.addListener(toggleToolbar);
 // Hold UI events
 function UIQueue(action, data) {
   switch (action) {
+    case "init":
+      w.petitionsGET(data, onPetitionsReceived);
+    case "list-load-pick":
+      w.authorizationGET(data, onAuthorizationReceived);    
+      break;
     case "button-load-click":
-      w.authorizationGET(data, onAuthorizationReceived);
       w.petitionGET(data, onPetitionReceived);
+      w.authorizationGET(data, onAuthorizationReceived);      
       break;
     case "button-sign-click":
       w.signPetition(data);
