@@ -6,28 +6,12 @@ function bg() {
   this.initValue = 1;
 
   this.startWorker = function() {
-    if(typeof(Worker) !== "undefined") {
-        if(typeof(w) == "undefined") {
-            w = new Worker("port.js");
-        }
-
-        w.addEventListener("message", function (oEvent) {
-          console.log("Called back by the worker!\n");
-        }, false);
-
-        w.postMessage(""); // start the worker.
-
-        w.onmessage = function(event) {
-            document.getElementById("result").innerHTML = event.data;
-        };
-    } else {
-        document.getElementById("result").innerHTML = "Sorry! No Web Worker support.";
-    }
+    this.w = new pt();
   }
 
   this.stopWorker = function () {
-    w.terminate();
-    w = undefined;
+    //this.w.terminate();
+    this.w = undefined;
   }
 
   this.toggleToolbar = function() {
@@ -52,25 +36,34 @@ function bg() {
 
   // Send a message to the current tab's content script.
   this.onPetitionsReceived  = function(petitionsList) {
+    console.log("onPetitionsReceived", petitionsList);
+    
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
       chrome.tabs.sendMessage(tabs[0].id, "onPetitionsReceived", petitionsList);
     });
+    
   }
 
   // Hold UI events
-  this.UIQueue = function(action, data) {
+  this.UIQueue = function(action, data, callback1, callback2) {
     switch (action) {
       case "init":
-        w.petitionsGET(data, onPetitionsReceived);
+        console.log("init");
+        this.w.petitionsGET(1, 10, callback1);
+        break;
       case "list-load-pick":
-        w.authorizationGET(data, onAuthorizationReceived);    
+        console.log("list-load-pick");
+        callback1(data.petition);
+        this.w.authorizationGET(data.petition, data.signer, callback2);    
         break;
       case "button-load-click":
-        w.petitionGET(data, onPetitionReceived);
-        w.authorizationGET(data, onAuthorizationReceived);      
+        console.log("button-load-pick");
+        this.w.petitionGET(data, onPetitionReceived);
+        this.w.authorizationGET(data, this.onAuthorizationReceived);      
         break;
       case "button-sign-click":
-        w.signPetition(data);
+        console.log("button-sign-click");
+        this.w.signPetition(data);
         break;
       default:
     }

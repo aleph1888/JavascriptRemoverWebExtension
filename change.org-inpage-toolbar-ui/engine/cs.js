@@ -31,16 +31,26 @@ function cs() {
   this.getSignerFormData = function(){
     return {
       email: document.getElementById("email").value,
-      name: document.getElementById("name").value,
+      first_name: document.getElementById("first_name").value,
+      last_name: document.getElementById("last_name").value,
       address: document.getElementById("address").value,
-
-    };
+      city: document.getElementById("city").value,
+      state_province: document.getElementById("state_province").value,
+      postal_code: document.getElementById("postal_code").value,
+      country_code: document.getElementById("country_code").value
+    }
   }
 
   this.setSignerFormData = function(data){
     document.getElementById("email").value = data.email;
-    document.getElementById("name").value = data.email;
-    document.getElementById("address").value = data.email;
+    document.getElementById("email2").value = data.email;
+    document.getElementById("address").value = data.address;    
+    document.getElementById('first_name').value = data.first_name;
+    document.getElementById('last_name').value = data.last_name;    
+    document.getElementById('city').value = data.city;
+    document.getElementById('state_province').value= data.state_province;
+    document.getElementById('postal_code').value = data.postal_code;
+    document.getElementById('country_code').value = data.country_code;
   }
 
   this.getPetitionUrl = function(){
@@ -61,8 +71,16 @@ function cs() {
     var option = document.createElement("option");
     option.text = petition.title;
     option.value = petition.id;
+    option.style = "cursor:pointer;";
     var select = document.getElementById("list");
     select.appendChild(option);
+    console.log("append item to list", option);
+    option.addEventListener("click", 
+        function(ev) {
+           console.log("onListLoadPicked: " + option.value );
+        }
+    );
+
   }
 
   /**
@@ -70,14 +88,12 @@ function cs() {
    **/
   this.refreshPetitionsList = function(petitionsList){
 
-    document.getElementById("list").clear();
-
     if ( petitionsList.length == 0 ) return;
 
-    for (i == 0; i < petitionsList.length ; i++ ) {
+    for (var i = 0; i < petitionsList.length ; i++ ) {
       var petition = petitionsList[i];
 
-      addPetitionToList(petition);
+      this.addPetitionToList(petition);
     }
 
   }
@@ -99,8 +115,10 @@ function cs() {
   this.loadPetition = function(petition){
     document.getElementById("id").value = petition.id;
     document.getElementById("title").value = petition.title;
-    document.getElementById("description").value = petition.description;
-    document.getElementById("thumbnail").src = petition.thumbnail;
+    document.getElementById("overview").innerHTML = petition.overview;
+    document.getElementById("image_url").src = petition.image_url;
+    document.getElementById("signature_count").value = petition.signature_count;
+    document.getElementById("goal").value = petition.goal;
   }
 
   /**
@@ -110,12 +128,9 @@ function cs() {
    **/
   this.loadSignerData = function(data){
 
-    if ( data == null ) data = {"email":null, "name":null, "address":null, "key":null, "reasons":null};
-    document.getElementById("email").value = data.email;
-    document.getElementById("name").value = data.name;
-    document.getElementById("address").value = data.name;
+    document.getElementById("email2").value = data.email;    
     document.getElementById("key").value = data.key;
-    document.getElementById("reasons").value = data.reasons;
+    document.getElementById("reason").value = data.reason;
   }
 
   this.init = function(){

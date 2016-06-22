@@ -20,6 +20,80 @@
   <script src="engine/change-js-api/changeorgapi.min.js"></script>
   <script src="engine/signerdata_cookie.js"></script>
   <script src="engine/docCookies.js"></script>
-  
-</body>
+   <span id="changeorgwebext_loadbar">
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ui.css">
+  </head>
+  <body>
+    <span id="changeorgwebext_loadbar">
+      
+      <h1>Change.org webextension</h1>
+
+      <div id="header">
+        <h2>Petitions list</h2>
+        <span id="title" class="wobbling">Instructions and warnings</span>
+        <div id="list">
+          <ul id="petitions_list">
+          </ul>
+          <p><a id="previous">Previous page</a> / <a id="next">next page</a></p>
+        </div>
+      </div>
+
+      <div id="bar">
+        <h2>Petition bar</h2>
+        <div id="petition_loader">
+          <h3>Petition search by url</h3>
+          url: <input id="url" type="url" ></input>
+        </div>        
+        <div id="signer_data">
+          <h3>Signer data</h3>
+            <ul>
+              <li>email: <input id="email" type="email"></input></li>    
+            </ul>            
+        </div>      
+      </div>
+
+      <div id="widget">
+        <h2>Sign petition form</h2>
+        <div id="petition_data">
+          <h3>Petition data</h3>
+          <ul>
+            <li>id: <input id="id" type="text"></input></li>
+            <li>title: <input id="title" type="text"></input></li>
+            <li>description: <textarea id="overview" rows="4" cols="50"></textarea></li>
+            <li>thumbnail: <img id="image_url"></li>
+            <li>signatures/goal: <input id="signature_count" type="text"></input><input id="goal" type="text"></input></li>
+          </ul>
+        </div>    
+        <div id="signature_data">
+          <h3>Signer data</h3>
+          <ul>
+            <li>email: <input id="email2" type="email"></input></li>
+            <ul>              
+              <li>first: <input id="first_name" type="text"></input></li>
+              <li>last: <input id="last_name" type="text"></input></li>      
+              <li>address: <textarea id="address" rows="4" cols="50"></textarea></li>
+              <li>city: <input id="city" type="text"></input></li>
+              <li>state/province: <input id="state_province" type="text"></input></li>            
+              <li>country code: <input id="country_code" type="text"></input></li>
+              <li>postal code: <input id="postal_code" type="text"></input></li>                   
+              <li><input id="button_load" type="submit" value="search url"></li>
+            </ul>
+            <li>key: <input id="key" type="text" size="75"></input></li>
+            <li>reasons: <textarea id="reason" rows="4" cols="50"></textarea></li>
+            <li><input id="button_sign" type="submit" value="sign"></li>
+          </ul>
+        </div>            
+      </div>
+    </span>
+        
+    <button id="toggle">toggle</button>
+    
+    <script src="ui.js">
+    </script>
+
+  </body>
 </html>

@@ -4,18 +4,18 @@ QUnit.test( "Test engine", function( assert ) {
   assert.ok( 1 == "1", "Passed!" );
 });
 
-QUnit.test( "content scripts loading", function( assert ) {
+QUnit.test( "Modules and state loader", function( assert ) {
 
   var content = new cs();
   var background = new bg();
   var port = new pt();
   var cookie = new sd_c();
 
-  assert.ok( 1 == content.initValue, "Controler loaded: Passed!" );
+  assert.ok( 1 == content.initValue, "content controler loaded: Passed!" );
   
-  assert.ok( 1 == background.initValue, "Controler loaded: Passed!" );
+  assert.ok( 1 == background.initValue, "background controler loaded: Passed!" );
 
-  assert.ok( 1 == port.initValue, "Worker loaded: Passed!" );
+  assert.ok( 1 == port.initValue, "worker loaded: Passed!" );
 
   var cookieData;
   cookie.getSignerDataCookie( function(data){
@@ -24,12 +24,12 @@ QUnit.test( "content scripts loading", function( assert ) {
       else assert.ok(true, "Cached default value: " + data);
     });
 
-  var message = cookieData == undefined ? "] Default: " + cookie.mSignerDataCookie.name : cookieData.name;
+  var message = cookieData == undefined ? "] Default: " + cookie.mSignerDataCookie.name : "] " + cookieData.name;
   assert.ok(true, 
     "Cookies loaded: [" + message    
   );
 
-  if ( cookieData == undefined ) {
+  if ( cookieData != undefined ) {
      assert.ok(true, "Cached going to init");
      cookie.initSignerDataCookie();
   }
@@ -37,7 +37,7 @@ QUnit.test( "content scripts loading", function( assert ) {
   cookie.getSignerDataCookie(
     function(data){
       cookieData = data;
-      assert.ok(data != undefined, "Cached Cookie signer [name: " + cookieData.signer.name + "]");
+      assert.ok(data != undefined, "Cached Cookie signer [postal_code: " + cookieData.signer.postal_code + "]");
     }
   );
     

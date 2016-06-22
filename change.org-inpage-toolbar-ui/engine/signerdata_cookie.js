@@ -5,12 +5,23 @@ function sd_c(){
   /**
    * Signer data cookie
    */
+
+
+  var demoUser= {
+    email: 'person@example.com',
+    first_name: 'John',
+    last_name: 'Doe',
+    address: '1 Market St',
+    city: 'Philadelphia',
+    state_province: 'PA',
+    postal_code: '19144',
+    country_code: 'US'
+  }
+
   this.mSignerDataCookie = {
       storeId: "changeorgwebext",
       name: "changeorgwebext.signer_data",
-     	signer: {email: "foo@foo.fo",
-    	         name: "foo",
-    	         address: "foo"},
+     	signer: demoUser,
       expirationDate: 1833062400
   };
 
@@ -92,7 +103,7 @@ function sd_c(){
     self = this;
     QUnit.test( "docCookie write action", function( assert ) {
       var cached = JSON.parse(docCookies.getItem("changeorgwebext.signer_data"));
-      console.log(cached.name);
+      console.log(cached.signer.first_name);
       assert.ok(
         cached != null,
         cached.name + " " + self.mSignerDataCookie.name );       

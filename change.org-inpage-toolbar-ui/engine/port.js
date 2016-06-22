@@ -19,17 +19,31 @@ function pt() {
    * '1234567,7654321'
    * https://github.com/change/api_docs/blob/master/v1/documentation/resources/petitions.md#get-petitions
    **/
-  this.petitionsGET = function(intBottom, inTop){
+  this.petitionsGET = function(intBottom, inTop, callback){
 
     this.mAPIChannel.setCallback(function(response) {
-        console.log(JSON.stringify(response.getData()));
+
+        QUnit.module( "B) Load data sequence" );
+
+        var response_data = {
+            "page":1, "prev_page_endpoint":null, "next_page_endpoint":null,
+            "total_pages":1,
+            "petitions":
+              [{"id" : 1, "title":"A Petition to Petition", "overview": "bla, bla",  "image_url": "images/test.png", "signature_count": 4, "goal": 10},
+              {"id" : 2, "title":"ave the clock tower!", "overview": "aaa bla, bla",  "image_url": "images/test.png", "signature_count": 2, "goal": 5},
+              ]
+        }; 
+        QUnit.test( "API CALLBACK", function( assert ) {
+          assert.ok( response_data != null, response);
+        });
+        console.log(JSON.stringify(response_data));
+        callback(response_data);
         // Console Output:
-        // {"page":1,"prev_page_endpoint":null,"next_page_endpoint":null,"total_pages":1,"petitions":[{"title":"A Petition to Petition"},{"title":"Save the Clock Tower!"}]} 
-    });
+        // 
+      });
 
     this.mAPIChannel.getPetitions({
-        petition_ids: intBottom + "," + inTop,
-        fields: 'title'
+        fields: ['id, title', 'overview', 'image_url', 'signature_count', 'goal']
     });
   }
 
@@ -39,6 +53,26 @@ function pt() {
   * @param strUrl Sample: 'http://www.change.org/petitions/save-the-clock-tower'
   **/
   this.petitionGET = function(data, callback){
+
+    return callback( {"email" : "dsgdg@dsgd.es", "key" : "dgsdgsdgdsg", "reason": "I support this petition!"} );
+    
+    /*var petition_id = data.id;
+
+    this.mAPIChannel.getPetitionId(strUrl,function(response) {
+      console.log(JSON.stringify(response.getData()));
+      // Console Output:
+      // {"result":"success","petition_id":1234567}
+      callback(response.getData()); 
+    });*/
+
+  }
+
+  /**
+  * @see https://github.com/vbuck/change-js-api/blob/master/examples/ChangeOrgApiPetition/getPetitionId.md
+  * @param strUrl Sample: 'http://www.change.org/petitions/save-the-clock-tower'
+  **/
+  this.petitionGET = function(data, callback){
+
 
     var strUrl = data.inputUrl;
 
@@ -51,11 +85,15 @@ function pt() {
 
   }
 
+
   /**
    * https://github.com/change/api_docs/blob/master/v1/documentation/resources/petitions/auth_keys.md
    **/
-  this.authorizationGET = function(data, callback){
+  this.authorizationGET = function(petition, signer, callback){
     
+    callback( {"email" : "dsgdg@dsgd.es", "key" : "dgsdgsdgdsg", "reason": "I support this petition!"} );
+    return;
+/*
     var auth= this.mAPIChannel.getAuthorization();
     
     auth.setPetitionId(1234567)
@@ -89,21 +127,21 @@ function pt() {
                   // Console Output:
                   // {"auth_key":"YOUR_AUTH_KEY","petition_id":1234567,"requester_email":"...","source":"...","source_description":"...","status":"granted","result":"success"}
                   // {"result":"failure","messages":["user has already signed the petition"]}
-                  /* TODO
+                  *//*TODO
                   Using a Callback Endpoint
                   According to Change.org, you need to pass a callback_endpoint parameter along with your authorization request. 
                   This is because authorization keys are generated asynchronously to your request. 
                   Therefore, when the key is ready, it will be posted back to your given endpoint. In this case, 
                   it is up to you to listen for that response and make the authorization key available to your application
                   as it becomes available.
-                  */
+                  *//*
               });
           }
 
       });
 
     auth.authorize();
-
+*/
   }
 
   /**

@@ -1,41 +1,63 @@
 QUnit.module( "B) Load data sequence" );
 
-QUnit.test( "Petitions list initialization has been requested", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
+
+QUnit.test( "Init loaders", function( assert ) {
+  
+
+  var background = new bg();
+
+  background.startWorker();
+
+  var content = new cs();
+
+  background.UIQueue("init", null, function(list){
+    console.log(list)
+    assert.ok( list != null, "onListReceived Pages: " + list.total_pages );
+    background.stopWorker();
+
+    content.refreshPetitionsList(list.petitions);
+  });
+
+  var cookie = new sd_c();
+   cookie.getSignerDataCookie(function(data){
+      assert.ok( 1 == "1", "setSignerFormData " +  data.signer);
+      content.setSignerFormData(data.signer);
+    });;  
+  
 });
 
-QUnit.test( "Petitions list data has arrived", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
 
-QUnit.test( "Petitions list has a picked petition", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
+QUnit.test( "Load petition", function( assert ) {
+  
 
-QUnit.test( "PeTition url is ready to be loaded", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
+  var background = new bg();
 
-QUnit.test( "Petition load request", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
+  background.startWorker();
 
-QUnit.test( "Petition loaded", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
+  var content = new cs();
 
-QUnit.test( "Authorization is resquested", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
+  var petitionData = {
+    "id" : 1, 
+    "title": "A Petition to Petition", 
+    "overview": "bla, bla", 
+    "image_url": "images/test.png", 
+    "signature_count": 4, 
+    "goal": 10
+  };
 
-QUnit.test( "Authorization getted", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
-
-QUnit.test( "Sign order", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
-});
-
-QUnit.test( "Sign order resolution", function( assert ) {
-  assert.ok( 1 == "1", "Passed!" );
+  var cookie = new sd_c();
+  cookie.getSignerDataCookie(function(data){
+    
+    background.UIQueue("list-load-pick", {petition: petitionData, signer: data.signer}, 
+          function(petition){
+             assert.ok( 1 == "1", "onLoadPetition " +  petition);
+            content.loadPetition(petition);
+          },
+          function(authorization){
+            assert.ok( 1 == "1", "onAuthorization " +  authorization);
+            content.loadSignerData(authorization)
+          }
+      );
+  });
+  
 });
